@@ -1,0 +1,166 @@
+<?php
+session_start();
+
+if (isset($_SESSION['conectado']) && $_SESSION['conectado'] == true) {
+
+} else {
+  echo "Esta pagina es solo para usuarios registrados.<br>";
+  echo "<br><a href='./index.php'>Login</a>";
+
+  exit;
+}
+
+$now = time();
+
+if ($now > $_SESSION['expira']) {
+  session_destroy();
+
+  echo "Su sesion a terminado, <a href='index.php'>Necesita Hacer Login</a>";
+  exit;
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="img/favicon-32x32.png">
+    <title>Inicio de Cálculo de probabilidades </title>
+    <!-- Estilos propios -->
+    <link rel="stylesheet" type="text/css" href = "css/mistilo.css">
+    <!--Materializecss min-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" />
+    <!--Fonts-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+      <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script>
+          function myAjax() {
+          $.ajax({
+              type: 'POST',
+              url: 'http://localhost:80/tratamientoDeLaInformacion/aspirantes/web/scripts/logout.php',
+              data:{action:'call_this'},
+              success:function(html) {
+                alert("kaka");
+              }
+
+          });
+        }
+    </script>
+  
+</head>
+
+<body>
+
+<!--Menu de navegación principal-->
+</div>
+
+<div class = "navbar-fixed">
+  <nav>
+    <div class="nav-wrapper blue lighten-2">
+      <div class="container">
+        
+        <div class="nav-wrapper">
+            
+            <a href="#" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
+            <a href="#" class="brand-logo" ><i class="fa fa-superscript left" aria-hidden="true"></i><span>Cálculo Bayes</span></a>
+            
+        </div>
+
+        <ul class="right hide-on-med-and-down">
+            <li><a href="principal.php">Inicio</a></li>
+            <li><a href="estadisticasTotales.php">Probabilidad Total</a></li>
+            <li><a href="estadisticas.php">Estadisticas por Preparatoria</a></li>
+            <li><a href="scripts/logout.php" ><i class="median left material-icons red-text">directions_run</i>Salir</a></li>
+            <li><a href="ayuda.php">Ayuda</a></li>
+        </ul>
+     </div>
+     
+  </nav>
+</div>
+
+<!--Menu de navegacion Mobil -->
+  <ul class="side-nav" id="mobile-menu">
+    <li><a href="principal.php" class="blue-text">Inicio</a></li>
+    <li><a href="estadisticasTotales.php" class="blue-text">Probabilidad Total</a></li>
+    <li><a href="estadisticas.php" class="blue-text">Estadisticas por Preparatoria</a></li>
+    <li><a href="scripts/logout.php" class = "red-text"><i class="material-icons red-text">directions_run</i>Salir</a></li>
+    <li><a href="ayuda.php" class="blue-text">Ayuda</a></li>
+  </ul>
+
+<div class="container">
+
+  <div class = "center ">
+
+      <h4>
+          Calculo de probabilidad de Alumnos aspirantes
+      </h4> 
+      
+  </div>
+
+  <div class="row">
+      <p class="flow-text">
+        Descripción
+      </p>
+      <div class = "lime lighten-5">
+            <p class="flow-text">
+            El proposito de este sitio es calcular de probabilidad de que un alumno venga de una escuela privada o pública dada la condición de elección de una carrera en terminos de porcentaje.
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br></p>
+  </div>
+  <div class="row">    
+        <h4>
+            ¿Que hacer?
+        </h4>
+
+      <div class="row lime lighten-5">
+        <p class="flow-text">Para poder cancular la probabilidad de que un alumno venga de una determinado sector. (escuela publica o privada), debe de ingresar a la pestaña "Calcular probalilidades" después se procedera a selecciónar una metricula al azar. Por consiguiente se le podrá clickear el boton "Calcular". Por consiguiente podra ver el porcentage de las probabilidades de elección de cada carrera.</p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br></p>
+      </div>
+  </div>
+</div>
+
+</div>
+
+ <footer class="page-footer blue valign-wrapper center blue lighten-2">
+   <div class="container">
+     <p class="flow-text ">&copy; 2018 Todos los derechos reservados</p>
+   </div>
+ </footer>
+  
+ <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+          
+          //inicia el menu lateral
+          $(".button-collapse").sideNav();
+        });
+    </script>
+</body>
+
+</html>
