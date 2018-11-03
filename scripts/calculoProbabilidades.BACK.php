@@ -76,17 +76,17 @@ class CalculaProbabilidad
     public function calculaPorcentageDePrepasPublicas()
     {
         $consulta =
-            "SELECT 
-            ( SELECT COUNT(*) AS cantidad from aspirante 
+            "SELECT
+            ( SELECT COUNT(*) AS cantidad from aspirante
               INNER JOIN preparatoria   /*Total Alumnos incritos por prepa*/
               ON aspirante.fk_idPrep = preparatoria.idPreparatoria
-              WHERE preparatoria.tipoDePrepa = 'PUBLICO' ) AS cantidadDeAlumnosEscuelasPublicas, 
+              WHERE preparatoria.tipoDePrepa = 'PUBLICO' ) AS cantidadDeAlumnosEscuelasPublicas,
             ( SELECT count(*) AS totalAlumnos from aspirante) AS totalAlumnos";
 
         $resultadoConsulta = $this->conexion->query($consulta);
 
         if ($resultadoConsulta->num_rows > 0) {
-            // array numérico y asociativo 
+            // array numérico y asociativo
             $arregloNumerico_Asociativo = $resultadoConsulta->fetch_array(MYSQLI_BOTH);
             $cantidad = $arregloNumerico_Asociativo['cantidadDeAlumnosEscuelasPublicas'];
             $totalAlumnos = $arregloNumerico_Asociativo['totalAlumnos'];
@@ -101,8 +101,8 @@ class CalculaProbabilidad
     public function calculaPorcentageDePrepasPrivadas()
     {
         $consulta =
-            "SELECT 
-            ( SELECT COUNT(*) AS cantidad from aspirante 
+            "SELECT
+            ( SELECT COUNT(*) AS cantidad from aspirante
               INNER JOIN preparatoria   /*Total Alumnos incritos por prepa*/
               ON aspirante.fk_idPrep = preparatoria.idPreparatoria
               WHERE preparatoria.tipoDePrepa = 'PRIVADO') AS cantidadDeAlumnosEscuelasPrivadas,
@@ -111,7 +111,7 @@ class CalculaProbabilidad
         $resultadoConsulta = $this->conexion->query($consulta);
 
         if ($resultadoConsulta->num_rows > 0) {
-            // array numérico y asociativo 
+            // array numérico y asociativo
             $arregloNumerico_Asociativo = $resultadoConsulta->fetch_array(MYSQLI_BOTH);
             $cantidad = $arregloNumerico_Asociativo['cantidadDeAlumnosEscuelasPrivadas'];
             $totalAlumnos = $arregloNumerico_Asociativo['totalAlumnos'];
@@ -127,7 +127,7 @@ class CalculaProbabilidad
         $porcentagePrepasPublicas = $this->calculaPorcentageDePrepasPublicas();
         $porcentagePrepasPrivadas = $this->calculaPorcentageDePrepasPrivadas();
 
-        //Creación de la estructura json 
+        //Creación de la estructura json
         $jsonArregloPorcentagesPorSector = array(
             'EscuelasPublicas' => number_format($porcentagePrepasPublicas, 4),
             'EscuelasPrivadas' => number_format($porcentagePrepasPrivadas, 4)
@@ -138,7 +138,7 @@ class CalculaProbabilidad
 
     public function convierteDatosPorcentagesDeCarrerasAjson()
     {
-        //Creación de la estructura json 
+        //Creación de la estructura json
         $porcentajeITI = number_format($this->consultaDePorcentageDeCarrera(1), 4);
         $porcentajeICC = number_format($this->consultaDePorcentageDeCarrera(2), 4);
         $porcentajeLCC = number_format($this->consultaDePorcentageDeCarrera(3), 4);
@@ -160,16 +160,16 @@ class CalculaProbabilidad
         return json_encode($arregloJson, JSON_UNESCAPED_UNICODE);
     }
 
-    public function consultaDePorcentageDeCarrera($carrera) // 1) ITI , 2) ICC, 3) LCC 
+    public function consultaDePorcentageDeCarrera($carrera) // 1) ITI , 2) ICC, 3) LCC
     {
 
-        $consulta = "SELECT 
+        $consulta = "SELECT
                         ( SELECT COUNT(*) as cantidad FROM aspirante WHERE fk_IdCarrera = $carrera) AS cantidadAspirantesPorCarrera,
                         ( SELECT COUNT(*) AS totalAlumnos from aspirante) AS totalAlumnos";
         $resultadoConsulta = $this->conexion->query($consulta);
 
         if ($resultadoConsulta->num_rows > 0) {
-            /// array numérico y asociativo 
+            /// array numérico y asociativo
             $arregloNumerico_Asociativo = $resultadoConsulta->fetch_array(MYSQLI_BOTH);
             $cantidad = $arregloNumerico_Asociativo['cantidadAspirantesPorCarrera'];
             $totalAlumnos = $arregloNumerico_Asociativo['totalAlumnos'];
@@ -194,7 +194,7 @@ class CalculaProbabilidad
         $resultadoConsulta = $this->conexion->query($consulta);
 
         if ($resultadoConsulta->num_rows > 0) {
-            /// array numérico y asociativo 
+            /// array numérico y asociativo
             $salida = "";
             while ($arregloNumerico_Asociativo = $resultadoConsulta->fetch_array(MYSQLI_BOTH)) {
                 $salida .= '<option value = ' . $arregloNumerico_Asociativo["idPreparatoria"] . '>' . $arregloNumerico_Asociativo["nombre"] . '</option>';
@@ -216,7 +216,7 @@ class CalculaProbabilidad
             <th>Porcentaje Carrera LCC</th>
           </tr>
         </thead>
-        
+
         <tbody>
             <tr>
                 <td>' . number_format($this->consultaDePorcentageDeCarrera(1), 4) . '</td>
@@ -237,7 +237,7 @@ class CalculaProbabilidad
             <th>Porcentaje Preparatorias privadas</th>
         </tr>
       </thead>
-      
+
       <tbody>
           <tr>
               <td>' . number_format($this->calculaPorcentageDePrepasPublicas(), 4) . '</td>
@@ -263,98 +263,22 @@ class CalculaProbabilidad
         
         <tbody>
             <tr>
-
-                <td colspan="3">
-                    <ul class="collapsible" data-collapsible="expandable">
-                        <li id = "colapso1">
-                            <div class="collapsible-header">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <td id = "carrera">' . 'ITI' . '</td>
-                                            <td>' . number_format($this->calculaProbabilidadTotal(1, "PUBLICO"), 4) . '</td>
-                                            <td>' . number_format($this->calculaProbabilidadTotal(1, "PRIVADO"), 4) . '</td>
-                                        </tr>
-                                    <thead>
-                                </table>
-                            </div>
-                            <div class="collapsible-body">
-                               
-                                <!--Graficas Principales Referenciados en "estadisticas.php" llenado con funciones ajax--->
-                                <!--ITI--->
-                                <div class="row">
-                                    <div class="col s12 m6" id = "graficaITIPublica" style="height: 230px; width: 50%;"></div>
-                                    <div class="col s12 m6" id = "graficaITInoPublica" style="height: 230px; width: 50%;"></div>
-                                </div>               
-
-                            </div>
-                        </li>
-                    </ul>
-                </td>
+                <td>' . 'ITI' . '</td>
+                <td>' . number_format($this->calculaProbabilidadTotal(1, "PUBLICO"), 4) . '</td>
+                <td>' . number_format($this->calculaProbabilidadTotal(1, "PRIVADO"), 4) . '</td>
             </tr>
             <tr>
-                <td colspan="3">
-                    <ul class="collapsible" data-collapsible="expandable">
-                        <li>
-                            <div class="collapsible-header">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <td td id = "carrera">' . 'ICC' . '</td>
-                                            <td>' . number_format($this->calculaProbabilidadTotal(2, "PUBLICO"), 4) . '</td>
-                                            <td>' . number_format($this->calculaProbabilidadTotal(2, "PRIVADO"), 4) . '</td>
-                                        </tr>
-                                    <thead>
-                                </table>
-                            </div>
-                            <div class="collapsible-body">
-                                
-                            <!--Graficas Principales Referenciados en "estadisticas.php" llenado con funciones ajax--->
-                            <!--ICC--->
-                            <div class="row">
-                                <div class="col s12 m6" id = "graficaICCPublica" style="height: 230px; width: 50%;"></div>
-                                <div class="col s12 m6" id = "graficaICCnoPublica" style="height: 230px; width: 50%;"></div>
-                            </div>  
-
-                            </div>
-                        </li>
-                    </ul>
-                </td>            
+                <td>' . 'ICC' . '</td>
+                <td>' . number_format($this->calculaProbabilidadTotal(2, "PUBLICO"), 4) . '</td>
+                <td>' . number_format($this->calculaProbabilidadTotal(2, "PRIVADO"), 4) . '</td>
+            </tr>
             <tr>
- 
-            <tr>
-                <td colspan="3">
-                    <ul class="collapsible" data-collapsible="expandable">
-                        <li>
-                            <div class="collapsible-header">
-                                <table class="highlight">
-                                    <thead>
-                                        <tr>
-                                            <td td id = "carrera">' . 'LCC' . '</td>
-                                            <td>' . number_format($this->calculaProbabilidadTotal(3, "PUBLICO"), 4) . '</td>
-                                            <td>' . number_format($this->calculaProbabilidadTotal(3, "PRIVADO"), 4) . '</td>
-                                        </tr>
-                                    <thead>
-                                </table>
-                            </div>
-                            <div class="collapsible-body">
-
-                            <!--Graficas Principales Referenciados en "estadisticas.php" llenado con funciones ajax--->
-                            <!--LCC--->
-                            <div class="row">
-                                <div class="col s12 m6" id = "graficaLCCPublica" style="height: 230px; width: 50%;"></div>
-                                <div class="col s12 m6" id = "graficaLCCnoPublica" style="height: 230px; width: 50%;"></div>
-                            </div>  
-
-                            </div>
-                        </li>
-                    </ul>
-                </td>            
-            <tr>
-
+                <td>' . 'LCC' . '</td>
+                <td>' . number_format($this->calculaProbabilidadTotal(3, "PUBLICO"), 4) . '</td>
+                <td>' . number_format($this->calculaProbabilidadTotal(3, "PRIVADO"), 4) . '</td>
+            </tr>
         </tbody>
-      </table>
-      ';
+      </table>';
         return $tablaValores; //////////////////////////////////////////7
     }
     //Retorna probabilidades De Bayes en formato json mostrado en "estadisticas.php"
@@ -379,7 +303,7 @@ class CalculaProbabilidad
             $resultadoConsulta = $this->conexion->query($consulta);
 
             if ($resultadoConsulta->num_rows > 0) {
-                /// array numérico y asociativo 
+                /// array numérico y asociativo
                 while ($arregloNumerico_Asociativo = $resultadoConsulta->fetch_array(MYSQLI_BOTH)) {
                     $sector = $arregloNumerico_Asociativo['tipoDePrepa'];
                 }
@@ -394,7 +318,7 @@ class CalculaProbabilidad
                         <th>Probabilidad de inscripción en otras carreras viniendo de una Escuela Pública</th>
                       </tr>
                     </thead>
-                    
+
                     <tbody>
                         <tr>
                             <td>' . 'ITI' . '</td>
@@ -416,7 +340,7 @@ class CalculaProbabilidad
                         <th>Probabilidad de inscripción en otras carreras viniendo de una Escuela Privada</th>
                       </tr>
                     </thead>
-                    
+
                     <tbody>
                         <tr>
                             <td>' . 'ITI' . '</td>
@@ -438,7 +362,7 @@ class CalculaProbabilidad
                         <th>Probabilidad de inscripción en otras carreras viniendo de una Escuela Pública</th>
                       </tr>
                     </thead>
-                    
+
                     <tbody>
                         <tr>
                             <td>' . 'ICC' . '</td>
@@ -460,7 +384,7 @@ class CalculaProbabilidad
                         <th>Probabilidad de inscripción en otras carreras viniendo de una Escuela Privada</th>
                       </tr>
                     </thead>
-                    
+
                     <tbody>
                         <tr>
                             <td>' . 'ICC' . '</td>
@@ -481,7 +405,7 @@ class CalculaProbabilidad
                         <th>Probabilidad de inscripción en otras carreras viniendo de una Escuela Pública</th>
                       </tr>
                     </thead>
-                    
+
                     <tbody>
                         <tr>
                             <td>' . 'LCC' . '</td>
@@ -502,7 +426,7 @@ class CalculaProbabilidad
                         <th>Probabilidad de inscripción en otras carreras viniendo de una Escuela Privada</th>
                       </tr>
                     </thead>
-                    
+
                     <tbody>
                         <tr>
                             <td>' . 'LCC' . '</td>

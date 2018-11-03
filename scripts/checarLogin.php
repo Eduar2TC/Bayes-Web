@@ -44,7 +44,7 @@ class Verificacion
                 $_SESSION['conectado'] = true;
                 $_SESSION['usuario'] = $this->getUsuario();
                 $_SESSION['inicia'] = time();
-                $_SESSION['expira'] = $_SESSION['inicia'] + (30 * 60);
+                $_SESSION['expira'] = $_SESSION['inicia'] + (360 * 60);
 
                 echo "Bienvenido! " . $_SESSION['usuario'];
                 //echo "<br><br><a href=../principal.php>Página principal</a>";

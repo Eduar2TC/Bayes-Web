@@ -15,40 +15,91 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .collapsible{
+            border-top-width: 0px;
+            border-left-width: 0px;
+            border-right-width: 0px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        .collapsible-header{
+            
+            padding-top: 0px;
+            padding-bottom: 0px;
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+        td{
+            
+            padding-top: 0px;
+            padding-left: 0px;
+            padding-bottom: 0px;
+            padding-right: 0px;
 
-
+        }
+    </style>
 </head>
 
 <body>
+    <table class="highlight">
+        <thead>
+            <tr>
+                <th>Carrera</th>
+                <th>Probabilidad de incripción viniendo de Escuela Pública</th>
+                <th>Probabilidad de incripción viniendo de Escuela Privada</th>
+            </tr>
+        </thead>
 
+        <tbody>
+            <tr>
 
-    <div class="navbar-fixed">
-        <nav class="black">
-            <div class="nav-wrapper">
-                <div class="container">
-                    <a href="#" class="brand-logo">LOGO hijo de su puta madre</a>
-                    <a href="#" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
-                    <ul class="right hide-on-med-and-down">
-                        <li><a href="#">Menu 1</a></li>
-                        <li><a href="#">Menu 2</a></li>
-                        <li><a href="#">Menu 3</a></li>
-                        <li><a href="#">Menu 4</a></li>
+                <td colspan="3">
+                    <ul class="collapsible" data-collapsible="accordion">
+                        <li>
+                            <div class="collapsible-header">
+                                <table class="highlight">
+                                    <thead>
+                                        <tr>
+                                            <th>ITI</th>
+                                            <th>0.2323</th>
+                                            <th>0.6080</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+
+                            <div class="collapsible-body">
+                                <p>algo</p>
+                            </div>
+                        </li>
                     </ul>
-                </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="collapsible" data-collapsible="accordion">
+        <li>
+            <div class="collapsible-header">
+                <table class="highlight">
+                    <thead>
+                        <tr>
+                            <th>ITI</th>
+                            <th>0.2323</th>
+                            <th>0.6080</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
-        </nav>
-    </div>
-    <ul class="side-nav" id="mobile-menu">
-        <li><a href="#">Menu 1</a></li>
-        <li><a href="#">Menu 2</a></li>
-        <li><a href="#">Menu 3</a></li>
-        <li><a href="#">Menu 4</a></li>
+
+            <div class="collapsible-body">
+                <tbody>
+                    <td colspan="3">jajajajaja</td>
+                </tbody>
+            </div>
+        </li>
     </ul>
-    <!-- $(".button-collapse").sideNav(); -->
-
-
-
-
 
 
 
@@ -59,6 +110,7 @@
         $(document).ready(function () {
 
             $(".button-collapse").sideNav();
+            $('#uno').removeClass('.collapsible-header').addClass('.collapsible-header active');
         });
     </script>
 </body>

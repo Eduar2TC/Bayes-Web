@@ -35,6 +35,8 @@ if ($now > $_SESSION['expira']) {
     <link rel="stylesheet" type="text/css" href = "css/mistilo.css">
     <!--Materializecss min-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" />
+    <!--Libreria para graficar--->
+    <script src="js/canvasjs.min.js"></script>
     <!--Fonts-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
       <!--Import Google Icon Font-->
@@ -53,6 +55,42 @@ if ($now > $_SESSION['expira']) {
           });
         }
     </script>
+
+    <style>
+        .collapsible{
+            border-top-width: 0px;
+            border-left-width: 0px;
+            border-right-width: 0px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        .collapsible-header{            
+            padding-top: 0px;
+            padding-bottom: 0px;
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+#carrera{width:20px;}
+        tr td{
+            
+            padding-top: 0px;
+            padding-left: 0px;
+            padding-bottom: 0px;
+            padding-right: 0px;
+            width: 150px;
+            height:50px;
+
+        }
+
+        .collapsible-body{
+            display: block;
+            padding-top: 0px;
+            padding-left: 0px;
+            border-bottom-width: 0px;
+            padding-bottom: 0px;
+            padding-right: 0px;
+        }
+    </style>
   
 </head>
 
@@ -150,7 +188,31 @@ if ($now > $_SESSION['expira']) {
                         <?php include_once("scripts/calculoProbabilidades.php");
                         echo (new CalculaProbabilidad())->retornaProbabilidadesDeBayes(); ?>
     </div>
+    <!--Graficas principales--->
 
+    <div class="row">
+        <div class="col s12 m6" id = "graficaICCPublica"></div>
+        <div class="col s12 m6" id = "graficaICCnoPublica"></div>
+    </div>
+    <div class="row">
+        <div class="col s12 m6" id = "graficaLCCPublica"></div>
+        <div class="col s12 m6" id = "graficaLCCnoPublica"></div>
+    </div>
+   
+    <!--Graficando las probabilidades prvadas--->
+    <div class="row">
+        <div class="col s12 m6" id = "graficaITIPrivada"></div>
+        <div class="col s12 m6" id = "graficaITInoPrivada"></div>
+    </div>
+    <div class="row">
+        <div class="col s12 m6" id = "graficaICCPrivada"></div>
+        <div class="col s12 m6" id = "graficaICCnoPrivada"></div>
+    </div>
+    <div class="row">
+        <div class="col s12 m6" id = "graficaLCCPrivada"></div>
+        <div class="col s12 m6" id = "graficaLCCnoPrivada"></div>
+    </div>
+    
     <!--Aqui van las graficas de los calculos-->
     <div class="row s12 m12 lime lighten-5">
     </div>
@@ -188,11 +250,13 @@ if ($now > $_SESSION['expira']) {
           //inicializacion del seleccion de carreras (selector)
           $('select').material_select();
 
+          //Inicializa el collapsible
+          $('.collapsible').collapsible();
+
             //Inicio Consulta de la base de datos
             $(document).on('change','select', function(){
                     var id_preparatorias = $('#preparatorias').val();
                     var id_carreras = $('#carreras').val()
-                    console.log(id_carreras);
 
                     $.ajax({
                         url: "scripts/calculoProbabilidades.php",
@@ -205,8 +269,8 @@ if ($now > $_SESSION['expira']) {
                         }
                     });
                 });
-              
-              /*$('#preparatorias').change(function(){
+              /*
+              $('#preparatorias').change(function(){
                     var id_preparatorias = $(this).val();
                     var id_carreras = $('#carreras').val()
 
@@ -225,7 +289,6 @@ if ($now > $_SESSION['expira']) {
                 $('#carreras').change(function(){
                     var id_carreras = $(this).val();
                     var id_preparatorias = $('#preparatorias').val()
-                    console.log(id_preparatorias );
 
                     $.ajax({
                         url: "scripts/calculoProbabilidades.php",
@@ -238,8 +301,209 @@ if ($now > $_SESSION['expira']) {
                         }
                     });
                 });
+                */
                 //Fin Consulta de la base de datos
-            */
+                //Inicio de Graficas
+                $.ajax({
+                    type: 'POST',
+                    url: 'scripts/calculoProbabilidades.php',
+                    data: { 
+                        'calculaProbabilidadesBayes': 'Si', 
+                    },
+                    success: function(data){
+                        //INICIO ITI
+                        //Arreglos para almacenar los valores
+                        var ITI_arregloPublico = [];
+                        var ITI_arregloPrivado = [];
+                        
+                        var ICC_arregloPublico = [];
+                        var ICC_arregloPrivado = [];
+                        
+                        var LCC_arregloPublico = [];
+                        var LCC_arregloPrivado = [];
+
+
+                        //obteniendo los valores de la consulta
+                        var datosPorcentajes = JSON.parse(data);
+                        console.log(datosPorcentajes);
+
+                        //Obteniendo los elmentos de los indices del arreglo
+                        var ITIpublica = parseFloat(datosPorcentajes.ITI[0]); /*ITI - Porcentages públicos */
+                        var ITInoPublica = parseFloat(1 - parseFloat(datosPorcentajes.ITI[0])).toFixed(4);
+                        var ITIprivada = parseFloat(datosPorcentajes.ITI[1]);   //ITI - Porcentages privados
+                        var ITInoPrivada = parseFloat(1 - parseFloat(datosPorcentajes.ITI[1])).toFixed(4);
+                        
+                        var ICCpublica = parseFloat(datosPorcentajes.ICC[0]); /*ICC - Porcentages públicos */
+                        var ICCnoPublica = parseFloat(1 - parseFloat(datosPorcentajes.ICC[0])).toFixed(4);
+                        var ICCprivada = parseFloat(datosPorcentajes.ICC[1]);   //ICC - Porcentages privados
+                        var ICCnoPrivada = parseFloat(1 - parseFloat(datosPorcentajes.ICC[1])).toFixed(4);
+
+                        var LCCpublica = parseFloat(datosPorcentajes.LCC[0]); /*LCC - Porcentages públicos */
+                        var LCCnoPublica = parseFloat(1 - parseFloat(datosPorcentajes.LCC[0])).toFixed(4);
+                        var LCCprivada = parseFloat(datosPorcentajes.LCC[1]);   //LCC - Porcentages privados
+                        var LCCnoPrivada = parseFloat(1 - parseFloat(datosPorcentajes.LCC[1])).toFixed(4);
+ 
+                        ITI_arregloPublico.push(
+                            {label: "Probabilidad Incripción viniendo de escuela Pública", y: ITIpublica},
+                            {label: "Probabilidad Incripción en otras carreras viniendo de escuela Pública", y: parseFloat(ITInoPublica)}
+                        );
+                        ITI_arregloPrivado.push(
+                            {label : "Probabilidad de que se inscriba en ITI viniendo de una Escuela Privada", y: ITIprivada},
+                            {label: "Probabilidad de incribirse en otras carreas cuando viene de una Escuela Privada", y: parseFloat(ITInoPrivada)}
+                        );
+
+                        ICC_arregloPublico.push(
+                            {label: "Probabilidad Incripción viniendo de escuela Pública", y: ICCpublica},
+                            {label: "Probabilidad Incripción en otras carreras viniendo de escuela Pública", y: parseFloat(ICCnoPublica)}
+                        );
+                        ICC_arregloPrivado.push(
+                            {label : "Probabilidad de que se inscriba en ICC viniendo de una Escuela Privada", y: ICCprivada},
+                            {label: "Probabilidad de incribirse en otras carreas cuando viene de una Escuela Privada", y: parseFloat(ICCnoPrivada)}
+                        );
+
+                        LCC_arregloPublico.push(
+                            {label: "Probabilidad Incripción viniendo de escuela Pública", y: LCCpublica},
+                            {label: "Probabilidad Incripción en otras carreras viniendo de escuela Pública", y: parseFloat(LCCnoPublica)}
+                        );
+                        LCC_arregloPrivado.push(
+                            {label : "Probabilidad de que se inscriba en LCC viniendo de una Escuela Privada", y: LCCprivada},
+                            {label: "Probabilidad de incribirse en otras carreas cuando viene de una Escuela Privada", y: parseFloat(LCCnoPrivada)}
+                        );
+                        
+                        //Gráfica ITI pública
+                        var graficaPorcentajesGraficaPublicaITI = new CanvasJS.Chart("graficaITIPublica", {
+                                animationEnabled: true,
+                                theme: "light3",
+                                title: {
+                                    text: "Carrera ITI"
+                                },
+                                axisX:{
+                                    //interval: 1
+                                },
+                                axisY: {
+                                    title: "Valores",
+                                    titleFontSize: 24
+                                },
+                                data: [{
+                                    type: "pie",
+                                    //yValueFormatString: "#,### Units",
+                                    dataPoints: ITI_arregloPublico
+                                }]
+                        });
+                        //Grafica ITI privada
+                        var graficaPorcentajesGraficaNoPublicaITI = new CanvasJS.Chart("graficaITInoPublica", {
+                                animationEnabled: true,
+                                theme: "light3",
+                                title: {
+                                    text: "Carrera ITI"
+                                },
+                                axisX:{
+                                    //interval: 1
+                                },
+                                axisY: {
+                                    title: "Valores",
+                                    titleFontSize: 24
+                                },
+                                data: [{
+                                    type: "pie",
+                                    //yValueFormatString: "#,### Units",
+                                    dataPoints: ITI_arregloPrivado
+                                }]
+                        });
+                        //FIN ITI
+                        //Gráfica ICC pública
+                        var graficaPorcentajesGraficaPublicaICC = new CanvasJS.Chart("graficaICCPublica", {
+                                animationEnabled: true,
+                                theme: "light3",
+                                title: {
+                                    text: "Carrera ICC"
+                                },
+                                axisX:{
+                                    //interval: 1
+                                },
+                                axisY: {
+                                    title: "Valores",
+                                    titleFontSize: 24
+                                },
+                                data: [{
+                                    type: "pie",
+                                    //yValueFormatString: "#,### Units",
+                                    dataPoints: ICC_arregloPublico
+                                }]
+                        });
+                        //Grafica ICC privada
+                        var graficaPorcentajesGraficaNoPublicaICC = new CanvasJS.Chart("graficaICCnoPublica", {
+                                animationEnabled: true,
+                                theme: "light3",
+                                title: {
+                                    text: "Carrera ICC"
+                                },
+                                axisX:{
+                                    //interval: 1
+                                },
+                                axisY: {
+                                    title: "Valores",
+                                    titleFontSize: 24
+                                },
+                                data: [{
+                                    type: "pie",
+                                    //yValueFormatString: "#,### Units",
+                                    dataPoints: ICC_arregloPrivado
+                                }]
+                        });
+                        //FIN ICC
+                        //Gráfica LCC pública
+                        var graficaPorcentajesGraficaPublicaLCC = new CanvasJS.Chart("graficaLCCPublica", {
+                                animationEnabled: true,
+                                theme: "light3",
+                                title: {
+                                    text: "Carrera LCC"
+                                },
+                                axisX:{
+                                    //interval: 1
+                                },
+                                axisY: {
+                                    title: "Valores",
+                                    titleFontSize: 24
+                                },
+                                data: [{
+                                    type: "pie",
+                                    //yValueFormatString: "#,### Units",
+                                    dataPoints: LCC_arregloPublico
+                                }]
+                        });
+                        //Grafica LCC privada
+                        var graficaPorcentajesGraficaNoPublicaLCC = new CanvasJS.Chart("graficaLCCnoPublica", {
+                                animationEnabled: true,
+                                theme: "light3",
+                                title: {
+                                    text: "Carrera LCC"
+                                },
+                                axisX:{
+                                    //interval: 1
+                                },
+                                axisY: {
+                                    title: "Valores",
+                                    titleFontSize: 24
+                                },
+                                data: [{
+                                    type: "pie",
+                                    //yValueFormatString: "#,### Units",
+                                    dataPoints: LCC_arregloPrivado
+                                }]
+                        });
+                        //FIN LCC
+
+                        graficaPorcentajesGraficaPublicaITI.render();
+                        graficaPorcentajesGraficaNoPublicaITI.render();
+
+                        graficaPorcentajesGraficaPublicaICC.render();
+                        graficaPorcentajesGraficaNoPublicaICC.render();
+
+                        graficaPorcentajesGraficaPublicaLCC.render();
+                        graficaPorcentajesGraficaNoPublicaLCC.render();
+                    }
+                });
         });
     </script>
 </body>

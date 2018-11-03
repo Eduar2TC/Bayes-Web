@@ -159,7 +159,8 @@ if ($now > $_SESSION['expira']) {
           
           //inicia el menu lateral
           $(".button-collapse").sideNav();
-        });
+          
+    });
     </script>
 </body>
 
