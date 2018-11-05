@@ -106,11 +106,11 @@ if ($now > $_SESSION['expira']) {
 
   <div class="row">
       <p class="flow-text">
-        Descripción
+        <h4>Descripción</h4>
       </p>
       <div class = "lime lighten-5">
             <p class="flow-text">
-            El proposito de este sitio es calcular de probabilidad de que un alumno venga de una escuela privada o pública dada la condición de elección de una carrera en terminos de porcentaje.
+            El proposito de este sitio es el calculo de la probabilidad de que un alumno se incriba en alguna de las carreras (ITI, ICC y LCC) dada la condición de que venga de alguna de las preparatorias del Estado de Puebla y pertenesca en el sector Público o Privado.
             <br>
             <br>
             <br>
