@@ -112,7 +112,7 @@ if ($now > $_SESSION['expira']) {
           <li><a href="principal.php">Inicio</a></li>
           <li><a href="estadisticasTotales.php">Probabilidad Total</a></li>
           <li><a href="estadisticas.php">Estadisticas por Preparatoria</a></li>
-          <li><a href="scripts/logout.php" ><i class="median left material-icons red-text">directions_run</i>Salir</a></li>
+          <li id = "salir"><a href="scripts/logout.php" ><i class="median left material-icons red-text">directions_run</i>Salir</a></li>
           <li><a href="ayuda.php">Ayuda</a></li>
       </ul>
           
