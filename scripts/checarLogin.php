@@ -40,7 +40,7 @@ class Verificacion
             $arregloNumerico_Asociativo = $resultadoConsulta->fetch_array(MYSQLI_BOTH);
             //descifrar hash
             //if (password_verify($contrasenia, $arregloNumerico_Asociativo['contraseña'])) {
-            if ($this->getContrasenia() === $arregloNumerico_Asociativo['contraseña']) {
+            if ($this->getUsuario() === $arregloNumerico_Asociativo['usuario'] && $this->getContrasenia() === $arregloNumerico_Asociativo['contraseña']) {
                 $_SESSION['conectado'] = true;
                 $_SESSION['usuario'] = $this->getUsuario();
                 $_SESSION['inicia'] = time();
@@ -48,13 +48,15 @@ class Verificacion
 
                 echo "Bienvenido! " . $_SESSION['usuario'];
                 //echo "<br><br><a href=../principal.php>Página principal</a>";
-                header("Location:../principal.php");    //Abre pagina
+                //header("Location:../principal.php");    //Abre pagina
 
-            } else {
-                echo "Username o Password estan incorrectos.";
-
-                echo "<br><a href='../index.php'>Volver a Intentarlo</a>";
+            } else if ($this->getUsuario() === $arregloNumerico_Asociativo['usuario'] && $this->getContrasenia() !== $arregloNumerico_Asociativo['contraseña']) {
+                echo "Contraseña incorrecta";
             }
+        } else {
+            echo "User o Pass incorrectos";
+
+            //echo "<br><a href='../index.php'>Volver a Intentarlo</a>";
         }
     }
 }

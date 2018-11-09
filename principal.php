@@ -47,7 +47,7 @@ if ($now > $_SESSION['expira']) {
               url: 'http://localhost:80/tratamientoDeLaInformacion/aspirantes/web/scripts/logout.php',
               data:{action:'call_this'},
               success:function(html) {
-                alert("kaka");
+                alert("adios");
               }
 
           });
@@ -69,8 +69,8 @@ if ($now > $_SESSION['expira']) {
         <div class="nav-wrapper">
             
             <a href="#" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
-            <a href="#" class="brand-logo" ><i class="fa fa-superscript left" aria-hidden="true"></i><span>Cálculo Bayes</span></a>
-            
+            <a href="#" class="brand-logo" ><i class="far fa-chart-bar"></i><span>Cálculo Bayes</span></a>
+            <!--            <a href="#" class="brand-logo" ><i class="fa fa-superscript left" aria-hidden="true"></i><i class="far fa-chart-bar"></i><span>Cálculo Bayes</span></a>-->
         </div>
 
         <ul class="right hide-on-med-and-down">
@@ -101,6 +101,7 @@ if ($now > $_SESSION['expira']) {
       <h4>
           Calculo de probabilidad de Alumnos aspirantes
       </h4> 
+      <img src="img/logo-600x600.png" alt="Bayes" class="responsive-img"/>
       
   </div>
 
@@ -159,6 +160,10 @@ if ($now > $_SESSION['expira']) {
           
           //inicia el menu lateral
           $(".button-collapse").sideNav();
+
+          //recibe mensaje de bienvenida del administrador
+          var mensaje = "Bienvenido " + "<?php echo $_GET['usuario'] ?> "+ "!";
+          Materialize.toast(mensaje , 8000, 'blue rounded');
           
     });
     </script>

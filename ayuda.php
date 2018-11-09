@@ -4,19 +4,19 @@ session_start();
 if (isset($_SESSION['conectado']) && $_SESSION['conectado'] == true) {
 
 } else {
-    echo "Esta pagina es solo para usuarios registrados.<br>";
-    echo "<br><a href='./index.php'>Login</a>";
+  echo "Esta pagina es solo para usuarios registrados.<br>";
+  echo "<br><a href='./index.php'>Login</a>";
 
-    exit;
+  exit;
 }
 
 $now = time();
 
 if ($now > $_SESSION['expira']) {
-    session_destroy();
+  session_destroy();
 
-    echo "Su sesion a terminado, <a href='index.php'>Necesita Hacer Login</a>";
-    exit;
+  echo "Su sesion a terminado, <a href='index.php'>Necesita Hacer Login</a>";
+  exit;
 }
 
 ?>
@@ -47,7 +47,7 @@ if ($now > $_SESSION['expira']) {
               url: 'http://localhost:80/tratamientoDeLaInformacion/aspirantes/web/scripts/logout.php',
               data:{action:'call_this'},
               success:function(html) {
-                alert("kaka");
+                alert("salir");
               }
 
           });

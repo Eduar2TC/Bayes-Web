@@ -103,7 +103,7 @@ if ($now > $_SESSION['expira']) {
       <div class="container">
       <div class="nav-wrapper">
           
-          <a href="#" class="brand-logo"><i class="fa fa-superscript" aria-hidden="true"></i> Cálculo Bayes</a>
+          <a href="#" class="brand-logo" ><i class="far fa-chart-bar"></i><span>Cálculo Bayes</span></a>
           <a href="#" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
           
       </div>
@@ -113,7 +113,7 @@ if ($now > $_SESSION['expira']) {
           <li><a href="estadisticasTotales.php">Probabilidad Total</a></li>
           <li><a href="estadisticas.php">Estadisticas por Preparatoria</a></li>
           <li><a href="scripts/logout.php" ><i class="median left material-icons red-text">directions_run</i>Salir</a></li>
-          <li><a href="#">Ayuda</a></li>
+          <li><a href="ayuda.php">Ayuda</a></li>
       </ul>
           
   </nav>
@@ -125,7 +125,7 @@ if ($now > $_SESSION['expira']) {
     <li><a href="estadisticasTotales.php" class="blue-text">Probabilidad Total</a></li>
     <li><a href="estadisticas.php" class="blue-text">Estadisticas por Preparatoria</a></li>
     <li><a href="scripts/logout.php" class = "red-text"><i class="material-icons red-text">directions_run</i>Salir</a></li>
-    <li><a href="#" class="blue-text">Ayuda</a></li>
+    <li><a href="ayuda.php" class="blue-text">Ayuda</a></li>
   </ul>
 
 <div class="container">

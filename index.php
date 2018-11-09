@@ -38,7 +38,7 @@
 
                 <ul class="right hide-on-med-and-down">
                     <li><a href="index.php">Inicio</a></li>
-                    <li><a href="#">Ayuda</a></li>
+                    <li><a href="index.php">Ayuda</a></li>
                 </ul>
         </div>
             
@@ -63,16 +63,16 @@
                     <h3 class = "center"><i class="fas fa-user-tie"></i>&nbspIniciar sesión</h3>
             </div>
 
-            <form action="scripts/checarLogin.php" method = "POST">
+            <form id = "formularioLogin" action="scripts/checarLogin.php" method = "POST">
 
                 <div class="input-field">
                     <label for="usuario">Usuario</label>
-                    <input type="text" name = "usuario" id = "idUsuario" class="validate">
+                    <input type="text" name = "usuario" id = "idUsuario" class="validate" required="" aria-required="true">
                 </div><br>
     
                 <div class="form-field">
                     <label for="password">Constraseña</label>
-                    <input type="password" name = "contrasenia" id = "idContrasenia" class="validate">
+                    <input type="password" name = "contrasenia" id = "idContrasenia" class="validate" required="" aria-required="true">
                 </div><br>
                 
                 <div class="form-field">
@@ -81,7 +81,7 @@
                 </div><br>
 
                 <div class="form-field">
-                    <button class="btn-large light-blue darken-3 waves-effect waves-orange" style = "width: 100%;" type="submit" name="action" >Login</button>
+                    <button id= "enviar" class="btn-large light-blue darken-3 waves-effect waves-orange" style = "width: 100%;" type="submit" name="action" >Login</button>
                 </div>
                 
             </form>
@@ -104,7 +104,58 @@
         $(document).ready(function () {
           
             $(".button-collapse").sideNav();
+
+           /* $('button#enviar').click(function(){
+                
+                   var usuario = $(this).val();
+                    $.ajax ({
+                        url : "checarLogin.php",
+                        method : "POST",
+                        data :  {usuario :usuario },
+                        dataType: "text",
+                        success:function(html)
+                        {
+                            $('#availablity').html(html);
+                        }
+                    });
+                })*/
+                $('#formularioLogin').submit(function (e) {
+                    var formulario = $('#formularioLogin');
+                    var usuario = $("input[name=usuario]").val();
+                    e.preventDefault(); // avoid to execute the actual submit of the form.
+                    $.ajax({
+                        type: formulario.attr('method'),
+                        url: formulario.attr('action'),
+                        //data: formulario.serialize(),
+                        data: formulario.serialize(),
+                        success: function (data) {
+                            
+                        if(data){ //Verifica si se obtienen los datos
+                                var estado = $.trim(data); //importante
+                                if(estado === "Contraseña incorrecta"){
+                                    Materialize.toast(estado, 3000, 'red rounded');
+                                    //window.location.replace('index.php');
+                                }
+                                else if(estado == "User o Pass incorrectos"){
+                                    Materialize.toast(estado, 3000, 'red rounded');
+                                    //window.location.replace('index.php');
+                                }
+                                else if(estado == ("Bienvenido! " + usuario) ){
+                                    //Materialize.toast(estado, 8000, 'blue rounded');
+                                    window.location.replace('principal.php?usuario='+usuario);
+                                }
+                            }
+                        },
+                        error: function (data) {
+                            console.log('Huy un error há ocurrido');
+                            alert('error');
+                        }
+                    }
+                    );
+                });
+
         });
+
     </script>
 </body>
 
