@@ -1,24 +1,17 @@
 <?php
 session_start();
-
 if (isset($_SESSION['conectado']) && $_SESSION['conectado'] == true) {
-
 } else {
-    echo "Esta pagina es solo para usuarios registrados.<br>";
-    echo "<br><a href='./index.php'>Login</a>";
-
+      //echo "Esta pagina es solo para usuarios registrados.<br>";
+      //echo "<br><a href='./index.php'>Login</a>";
+    echo "Su sesion expiró";
     exit;
 }
-
 $now = time();
-
 if ($now > $_SESSION['expira']) {
     session_destroy();
-
-    echo "Tu sesion a terminado, <a href='index.php'>Necesitas iniciar de nuevo</a>";
     exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -41,6 +34,8 @@ if ($now > $_SESSION['expira']) {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
       <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Sweet Alert-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script>
           function myAjax() {
@@ -49,7 +44,7 @@ if ($now > $_SESSION['expira']) {
               url: 'http://localhost:80/tratamientoDeLaInformacion/aspirantes/web/scripts/logout.php',
               data:{action:'call_this'},
               success:function(html) {
-                alert("kaka");
+                alert("Algo");
               }
 
           });
@@ -504,6 +499,32 @@ if ($now > $_SESSION['expira']) {
                         graficaPorcentajesGraficaNoPublicaLCC.render();
                     }
                 });
+
+         //Verificar Sesión
+         function verificaSesion(){
+            $.ajax(
+                {
+                  url:"estadisticas.php",  //La url donde se invoca las variables y el tiempo de Sesión
+                  method: "POST",
+                  success:function(data){
+                    if(data === 'Su sesion expiró'){
+                      //Alerta de termino de sesión
+                      swal({
+                        title: "Sesión terminada",
+                        text: "Procede a iniciar de nuevo",
+                        icon: "warning",
+                      })
+                      .then((value) => {
+                        window.location.href="index.php";
+                      });
+                    }
+                  }
+                });
+          }
+          setInterval(function(){
+            verificaSesion(); // Llama la funcion cada 3 segundos para verificar si la sesión há expirado
+          }, 3000);
+
         });
     </script>
 </body>

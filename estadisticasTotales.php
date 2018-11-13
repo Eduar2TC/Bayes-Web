@@ -1,24 +1,17 @@
 <?php
 session_start();
-
 if (isset($_SESSION['conectado']) && $_SESSION['conectado'] == true) {
-
 } else {
-  echo "Esta pagina es solo para usuarios registrados.<br>";
-  echo "<br><a href='./index.php'>Login</a>";
-
+      //echo "Esta pagina es solo para usuarios registrados.<br>";
+      //echo "<br><a href='./index.php'>Login</a>";
+  echo "Su sesión expiró";
   exit;
 }
-
 $now = time();
-
 if ($now > $_SESSION['expira']) {
   session_destroy();
-
-  echo "Su sesion a terminado, <a href='index.php'>Necesita Hacer Login</a>";
   exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +35,8 @@ if ($now > $_SESSION['expira']) {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
       <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  
+    <!--Sweet Alert-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <body>
@@ -205,6 +199,32 @@ if ($now > $_SESSION['expira']) {
               }
               
             });
+  
+         //Verificar Sesión
+         function verificaSesion(){
+            $.ajax(
+                {
+                  url:"estadisticasTotales.php",  //La url donde se invoca las variables y el tiempo de Sesión
+                  method: "POST",
+                  success:function(data){
+                    if(data === 'Su sesión expiró'){
+                      //Alerta de termino de sesión
+                      swal({
+                        title: "Sesión terminada",
+                        text: "Procede a iniciar de nuevo",
+                        icon: "warning",
+                      })
+                      .then((value) => {
+                        window.location.href="index.php";
+                      });
+                    }
+                  }
+                });
+          }
+          setInterval(function(){
+            verificaSesion(); // Llama la funcion cada 3 segundos para verificar si la sesión há expirado
+          }, 3000);
+
         });
     </script>
 </body>

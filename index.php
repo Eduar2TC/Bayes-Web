@@ -25,24 +25,25 @@
 <!--Menu de navegación principal-->
 <div class="row">
     <div class = "navbar-fixed">
-    <nav>
-        <div class="nav-wrapper blue lighten-2">
-            <div class="container">
+        <nav>
+            <div class="nav-wrapper blue lighten-2">
+                <div class="container">
 
-                <div class="nav-wrapper">
-                    
-                    <a  href="index.php" class="brand-logo"><i class="fas fa-brain"></i>Cálculo Bayes</a>
-                    <a href="index.php" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
-                    
+                    <div class="nav-wrapper">
+                        
+                        <a  href="index.php" class="brand-logo"><i class="fas fa-brain"></i>Cálculo Bayes</a>
+                        <a href="index.php" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
+                        
+                    </div>
+
+                    <ul class="right hide-on-med-and-down">
+                        <li><a href="index.php">Inicio</a></li>
+                        <li><a href="index.php">Ayuda</a></li>
+                    </ul>
                 </div>
-
-                <ul class="right hide-on-med-and-down">
-                    <li><a href="index.php">Inicio</a></li>
-                    <li><a href="index.php">Ayuda</a></li>
-                </ul>
-        </div>
-            
-    </nav>
+            </div>
+                
+        </nav>
     </div>
 </div>
 
@@ -131,7 +132,7 @@
                         success: function (data) {
                             
                         if(data){ //Verifica si se obtienen los datos
-                                var estado = $.trim(data); //importante
+                                var estado = $.trim(data); //importante (quitas los espacios de la cadena)
                                 if(estado === "Contraseña incorrecta"){
                                     Materialize.toast(estado, 3000, 'red rounded');
                                     //window.location.replace('index.php');
@@ -147,8 +148,8 @@
                             }
                         },
                         error: function (data) {
-                            console.log('Huy un error há ocurrido');
-                            alert('error');
+                            console.log('Error  : Huy un error há ocurrido');
+                            alert('Error  : Huy un error há ocurrido');
                         }
                     }
                     );
