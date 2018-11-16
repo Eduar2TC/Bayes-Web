@@ -106,7 +106,7 @@ if ($now > $_SESSION['expira']) {
       </p>
       <div class = "lime lighten-5">
             <p class="flow-text">
-            El proposito de este sitio es el calculo de la probabilidad de que un alumno se incriba en alguna de las carreras (ITI, ICC y LCC) dada la condición de que venga de alguna de las preparatorias del Estado de Puebla y pertenesca en el sector Público o Privado.
+            El proposito de este sitio es el cálculo de la probabilidad de que un alumno se inscriba en alguna de las carreras (ITI, ICC y LCC) dada la condición de que venga de alguna de las preparatorias del Estado de Puebla y pertenesca en el sector Público o Privado.
             <br>
             <br>
             <br>
@@ -124,7 +124,7 @@ if ($now > $_SESSION['expira']) {
         </h4>
 
       <div class="row lime lighten-5">
-        <p class="flow-text">Para poder cancular la probabilidad de que un alumno venga de una determinado sector. (escuela publica o privada), debe de ingresar a la pestaña "Calcular probalilidades" después se procedera a selecciónar una metricula al azar. Por consiguiente se le podrá clickear el boton "Calcular". Por consiguiente podra ver el porcentage de las probabilidades de elección de cada carrera.</p>
+        <p class="flow-text">Para poder cancular la probabilidad de que un alumno venga de una determinado Sector (escuela publica o privada). Debe de ingresar a la pestaña "Calcular probalilidades" después se procedera a selecciónar una metricula al azar. Por consiguiente se le podrá clickear el boton "Calcular". Por consiguiente podra ver el porcentage de las probabilidades de elección de cada carrera.</p>
         <br>
         <br>
         <br>
@@ -167,7 +167,7 @@ if ($now > $_SESSION['expira']) {
                   url:"principal.php",  //La url donde se invoca las variables y el tiempo de Sesión
                   method: "POST",
                   success:function(data){
-                    if(data === 'Su sesión expiró'){
+                    if(data === 'Su sesion expiró'){
                       //Alerta de termino de sesión
                       swal({
                         title: "Sesión terminada",

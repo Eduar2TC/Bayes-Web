@@ -65,7 +65,7 @@ if ($now > $_SESSION['expira']) {
       <div class="container">
       <div class="nav-wrapper">
           
-          <a href="#" class="brand-logo"><i class="fa fa-superscript" aria-hidden="true"></i> Cálculo Bayes</a>
+          <a href="#" class="brand-logo" ><i class="far fa-chart-bar"></i><span>Cálculo Bayes</span></a>  
           <a href="#" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
           
       </div>
